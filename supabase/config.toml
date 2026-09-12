@@ -1,0 +1,56 @@
+project_id = "emuss-v2"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[db]
+port = 54322
+shadow_port = 54320
+major_version = 17
+
+[db.seed]
+enabled = true
+sql_paths = ["./seed.sql"]
+
+[realtime]
+enabled = true
+
+[studio]
+enabled = true
+port = 54323
+api_url = "http://127.0.0.1"
+
+[local_smtp]
+enabled = true
+port = 54324
+
+[auth]
+enabled = true
+site_url = "http://127.0.0.1:5173"
+additional_redirect_urls = ["http://localhost:5173", "http://localhost:5173/mis-reservas", "http://localhost:5173/admin/login", "http://localhost:5173/admin/set-password", "http://127.0.0.1:5173/mis-reservas", "http://127.0.0.1:5173/admin/login", "http://127.0.0.1:5173/admin/set-password"]
+jwt_expiry = 3600
+enable_signup = true
+
+[auth.email]
+enable_signup = true
+enable_confirmations = true
+otp_length = 6
+otp_expiry = 600
+
+[auth.email.template.magic_link]
+subject = "Tu código de acceso a EMUSS"
+content_path = "./supabase/templates/magic-link.html"
+
+[auth.email.template.confirmation]
+subject = "Confirma tu correo en EMUSS"
+content_path = "./supabase/templates/magic-link.html"
+
+[functions.staff-invite]
+verify_jwt = false
+
+[functions.dispatch-notifications]
+verify_jwt = false

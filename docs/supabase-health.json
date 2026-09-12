@@ -1,0 +1,13 @@
+{
+  "checked_at": "2026-09-12T03:22:44.418Z",
+  "url": "https://vaduqtdiecmmxhmlycay.supabase.co",
+  "venues": 3,
+  "pools": 3,
+  "lanes": 24,
+  "available_lane_slots": 384,
+  "realtime_subscription": "SUBSCRIBED",
+  "edge_functions": {
+    "staff-invite": "deployed, GET rejected",
+    "dispatch-notifications": "deployed, GET rejected"
+  }
+}

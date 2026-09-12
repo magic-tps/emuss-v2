@@ -1,0 +1,15 @@
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+.supabase/
+supabase/.temp/
+supabase/**/.temp/
+supabase/.branches/
+.test-db/
+test-results/
+*.tsbuildinfo
+
+# Public URL and anon key only.
+!.env.production
