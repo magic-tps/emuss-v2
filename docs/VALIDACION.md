@@ -4,6 +4,9 @@ Actualizado: 12 de septiembre de 2026.
 
 ## Verificado
 
+- Corrección de acceso público: se distinguen cuota de correo, destinatario no permitido y límite general de solicitudes; HTTP 429 activa una pausa de 60 segundos entre intentos, sin prometer que la cuota del proveedor se recupere en ese plazo. Las cuentas existentes pueden iniciar sesión con contraseña desde la reserva o Mis reservas.
+- La prueba de navegador simuló una respuesta de cuota agotada sin enviar correos y comprobó el bloqueo de reintentos incluso al cambiar de modo. Después inició sesión con la contraseña real del propietario y obtuvo `my_reservations` por HTTP 200 en móvil. Lint, build y seis pruebas unitarias pasan. La entrega de correo sigue pendiente de un proveedor SMTP.
+
 - GitHub Pages publicado en `https://magic-tps.github.io/emuss-v2/`, con build y deploy exitosos. La cuenta autenticada `magic-tps` tiene verificado el correo solicitado por el usuario. `origin` de esta copia apunta a `magic-tps/emuss-v2`; el remoto anterior se conserva como `previous-project`.
 - Siete comprobaciones de navegador en el sitio público aprobadas: disponibilidad real a 1440 y 375 px, acceso directo HTTP 200 a Mis reservas/login/recuperación/activación, y login SUPER_ADMIN con consulta real del dashboard y recarga. Sin excepciones de página ni desbordamiento horizontal en la reserva. Evidencia: [pages-validation.json](pages-validation.json).
 - `tsconfig.node.json` y `tsconfig.app.json` declaran compilación incremental y pasan `tsc -p` individualmente; el editor dispone de configuración para usar el TypeScript del proyecto.

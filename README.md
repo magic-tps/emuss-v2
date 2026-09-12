@@ -25,6 +25,8 @@ Variables públicas: `VITE_SUPABASE_URL` y `VITE_SUPABASE_ANON_KEY`. Nunca poner
 
 ## Autenticación y administradores
 
+Las cuentas que ya tienen contraseña pueden usar **Ingresar con contraseña** en la reserva o en Mis reservas. Este acceso no solicita correos. Si el envío alcanza su cuota, se explica el problema y se limita la frecuencia de reintento; eso no amplía la cuota del proveedor. Para el acceso de nuevos clientes por correo hace falta completar la configuración de SMTP.
+
 Clientes verifican su correo mediante enlace de acceso o código OTP antes del hold, que así queda ligado a una identidad confirmada. No existe búsqueda pública por DNI. La plantilla local muestra `{{ .Token }}`. El proyecto alojado usa la plantilla predeterminada con enlace: Supabase rechazó su personalización en el plan gratuito con el proveedor de correo predeterminado. Para mostrar el código en ese correo hace falta configurar SMTP propio y aplicar la plantilla. Las URLs locales de retorno ya están registradas.
 
 Para el primer administrador: crear/confirmar un usuario mediante Supabase Auth, y ejecutar **una sola vez desde SQL Editor como administrador de la base**:

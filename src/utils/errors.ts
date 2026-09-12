@@ -16,6 +16,10 @@ const messages: Record<string, string> = {
 };
 export function friendlyError(error: unknown): string {
   const message = error instanceof Error ? error.message : error && typeof error === 'object' && 'message' in error ? String(error.message) : '';
+  const code = error && typeof error === 'object' && 'code' in error ? String(error.code) : '';
+  if (code === 'over_email_send_rate_limit' || /email.*rate limit/i.test(message)) return 'El servicio alcanzó su límite de envío de correos. Inténtalo más tarde. Si ya tienes una contraseña, puedes ingresar con ella.';
+  if (code === 'email_address_not_authorized' || /email address not authorized/i.test(message)) return 'El servicio de correo todavía no permite enviar a esta dirección. Contacta con recepción o ingresa con tu contraseña si ya tienes una.';
+  if (code === 'email_not_confirmed') return 'Tu correo todavía no está verificado. Abre el enlace de confirmación antes de ingresar.';
   for (const [code, text] of Object.entries(messages)) if (message.includes(code)) return text;
   if (/Invalid login credentials/i.test(message)) return 'Correo o contraseña incorrectos.';
   if (/expired|invalid.*otp/i.test(message)) return 'El código venció o es incorrecto. Solicita uno nuevo.';

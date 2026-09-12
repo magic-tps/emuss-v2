@@ -6,6 +6,13 @@ import type { Availability } from '../types/domain';
 describe('customer error boundaries', () => {
   it('never exposes raw database detail', () => { expect(friendlyError({ message: 'duplicate key violates reservations_user_slot_unique' })).not.toMatch(/duplicate|postgres|unique/i); });
   it('gives actionable expired hold message', () => expect(friendlyError(new Error('HOLD_EXPIRED'))).toContain('Selecciona nuevamente'));
+  it('distinguishes the email delivery quota from a generic request throttle', () => {
+    expect(friendlyError({ code: 'over_email_send_rate_limit', message: 'Email rate limit exceeded' })).toContain('límite de envío de correos');
+    expect(friendlyError({ code: 'over_request_rate_limit', message: 'Too many requests' })).not.toContain('límite de envío de correos');
+  });
+  it('explains restricted recipients without claiming retrying will fix it', () => {
+    expect(friendlyError({ code: 'email_address_not_authorized', message: 'Email address not authorized' })).toContain('todavía no permite enviar');
+  });
 });
 describe('booking time and alternatives', () => {
   it('handles month/year boundaries without local timezone drift', () => expect(bookingDateLimit('2026-12-31', 30)).toBe('2027-01-30'));
