@@ -4,6 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "mail:verify": "node scripts/configure-gmail.mjs --verify-only",
+    "mail:setup": "node scripts/configure-gmail.mjs",
     "dev": "vite --host 127.0.0.1",
     "build": "tsc -b && vite build",
     "build:pages": "node scripts/build-pages.mjs",
@@ -40,6 +42,7 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.22",
     "globals": "^16.4.0",
+    "nodemailer": "10.0.9",
     "pg": "^8.16.3",
     "supabase": "^2.117.0",
     "tailwindcss": "^4.1.13",

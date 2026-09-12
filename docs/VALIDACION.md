@@ -4,6 +4,8 @@ Actualizado: 12 de septiembre de 2026.
 
 ## Verificado
 
+- Preparada la conexión Gmail SMTP para Auth y avisos de reserva. `deno check supabase/functions/dispatch-notifications/index.ts` pasó; el instalador rechaza una contraseña de aplicación ausente antes de abrir conexiones o cambiar Auth. La comprobación SMTP real y la entrega de mensajes están pendientes de `SMTP_PASS` en `.env.smtp`.
+
 - Corrección de acceso público: se distinguen cuota de correo, destinatario no permitido y límite general de solicitudes; HTTP 429 activa una pausa de 60 segundos entre intentos, sin prometer que la cuota del proveedor se recupere en ese plazo. Las cuentas existentes pueden iniciar sesión con contraseña desde la reserva o Mis reservas.
 - La prueba de navegador simuló una respuesta de cuota agotada sin enviar correos y comprobó el bloqueo de reintentos incluso al cambiar de modo. Después inició sesión con la contraseña real del propietario y obtuvo `my_reservations` por HTTP 200 en móvil. Lint, build y seis pruebas unitarias pasan. La entrega de correo sigue pendiente de un proveedor SMTP.
 

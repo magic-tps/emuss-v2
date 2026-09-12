@@ -110,6 +110,8 @@ Los horarios vienen de plantillas PostgreSQL por día de semana. Después de edi
 
 ## Notificaciones y servicios externos
 
+Para la configuración elegida con Gmail, ver [docs/GMAIL.md](docs/GMAIL.md). `npm run mail:verify` comprueba SMTP sin enviar correo; `npm run mail:setup` configura Auth, el dispatcher y el scheduler cuando `.env.smtp` contiene una contraseña de aplicación válida. La activación sigue pendiente de esa credencial.
+
 La confirmación encola correo en la misma transacción; una reserva confirmada no significa que el correo haya sido entregado. `dispatch-notifications` reclama mensajes con `SKIP LOCKED`, token y lease, reintenta hasta cinco veces y usa clave de idempotencia para correo. La cola WhatsApp está preparada como adaptador; activarla requiere consentimiento, teléfono internacional y plantilla aprobada. No se encola WhatsApp automáticamente.
 
 Secretos de Edge Functions: `APP_URL`, `RESEND_API_KEY`, `EMAIL_FROM`, `NOTIFICATION_CRON_SECRET`; opcionales `WHATSAPP_ACCESS_TOKEN`, `WHATSAPP_PHONE_NUMBER_ID`, `WHATSAPP_TEMPLATE`, `WHATSAPP_GRAPH_VERSION`. Supabase proporciona sus variables de URL/anon/service role en Edge. Configurarlos con `supabase secrets set --env-file <archivo privado>` y desplegar:
