@@ -4,6 +4,8 @@ URL pública: https://magic-tps.github.io/emuss-v2/
 
 Acceso administrativo: https://magic-tps.github.io/emuss-v2/admin/login/
 
+Publicación verificada el 12 de septiembre de 2026: [workflow exitoso](https://github.com/magic-tps/emuss-v2/actions/runs/34683580934). Se comprobó disponibilidad en móvil/escritorio y acceso SUPER_ADMIN real, incluyendo recarga del dashboard. Evidencia en [pages-validation.json](pages-validation.json).
+
 La V2 se publica desde la carpeta `v2/` del repositorio `LuisTE1/proyecto-emuss`. El código anterior de la raíz se conserva. El workflow `.github/workflows/deploy.yml` instala con Node 22, valida lint y pruebas unitarias, compila V2 y publica únicamente `dist` mediante GitHub Pages.
 
 `npm run build:pages` configura el nombre del repositorio (`/emuss-v2/` por defecto) como base de recursos y rutas. Genera entradas HTML para las rutas estáticas y `404.html` para los comprobantes con código dinámico. La URL y sus parámetros de autenticación se conservan. Los enlaces de correo y recuperación incluyen el directorio de Pages.

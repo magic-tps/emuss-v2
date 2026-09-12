@@ -4,6 +4,8 @@ Aplicación React + TypeScript para reservar un carril completo en una red de pi
 
 ## Ejecutar
 
+Web publicada: [EMUSS V2](https://magic-tps.github.io/emuss-v2/). [Acceso administrativo](https://magic-tps.github.io/emuss-v2/admin/login/). El repositorio está en la cuenta `magic-tps`; instrucciones de publicación en [docs/GITHUB_PAGES.md](docs/GITHUB_PAGES.md).
+
 El entorno de este workspace ya está conectado al proyecto alojado **emuss-v2**. `.env.local` contiene la URL y la clave pública; basta ejecutar `npm run dev` y abrir http://127.0.0.1:5173. Estado, verificaciones y pendientes: [docs/SUPABASE.md](docs/SUPABASE.md).
 
 Requisitos: Node.js 22.12 o superior y npm. Docker Desktop y Supabase CLI son necesarios para la alternativa local descrita a continuación. Sin conexión se muestra un estado de servicio no disponible y nunca disponibilidad inventada.

@@ -1,8 +1,12 @@
 # Validación de EMUSS V2
 
-Fecha: 11 de septiembre de 2026.
+Actualizado: 12 de septiembre de 2026.
 
 ## Verificado
+
+- GitHub Pages publicado en `https://magic-tps.github.io/emuss-v2/`, con build y deploy exitosos. La cuenta autenticada `magic-tps` tiene verificado el correo solicitado por el usuario. `origin` de esta copia apunta a `magic-tps/emuss-v2`; el remoto anterior se conserva como `previous-project`.
+- Siete comprobaciones de navegador en el sitio público aprobadas: disponibilidad real a 1440 y 375 px, acceso directo HTTP 200 a Mis reservas/login/recuperación/activación, y login SUPER_ADMIN con consulta real del dashboard y recarga. Sin excepciones de página ni desbordamiento horizontal en la reserva. Evidencia: [pages-validation.json](pages-validation.json).
+- `tsconfig.node.json` y `tsconfig.app.json` declaran compilación incremental y pasan `tsc -p` individualmente; el editor dispone de configuración para usar el TypeScript del proyecto.
 
 - `npm run lint`: sin errores.
 - `npm run build`: TypeScript estricto y compilación Vite correctos. Advertencias no bloqueantes de comentarios de Zod y tamaño del bundle principal (694 kB, 207 kB gzip). El panel administrativo y el lector de cámara se cargan por separado.
@@ -53,6 +57,6 @@ Fecha: 11 de septiembre de 2026.
 
 Tras la indicación del usuario se ejecutó `scripts/bootstrap-owner.mjs` y se creó `u201916314@upc.edu.pe` como SUPER_ADMIN, con contraseña inicial guardada en `.env.owner` excluido de Git. `scripts/test-supabase.mjs` sigue pendiente de autorización específica para crear cuentas y reservas temporales, tras el rechazo de la revisión automática de permisos.
 
-Falta comprobar entrega real del correo de acceso, invitaciones/recuperación, sesión y reserva autenticadas, eventos de cambios y reconexión Realtime, cámara QR y entrega de notificaciones. El proveedor predeterminado no permitió personalizar la plantilla para mostrar OTP: queda el enlace de acceso. No hay SMTP propio ni credenciales de Resend/WhatsApp configurados; el dispatcher está desplegado, pero no tiene proveedor ni programación de envíos.
+Falta comprobar entrega real del correo de acceso, invitaciones/recuperación, reserva autenticada completa, eventos de cambios y reconexión Realtime, cámara QR y entrega de notificaciones. El proveedor predeterminado no permitió personalizar la plantilla para mostrar OTP: queda el enlace de acceso. No hay SMTP propio ni credenciales de Resend/WhatsApp configurados; el dispatcher está desplegado, pero no tiene proveedor ni programación de envíos.
 
-Las pantallas autenticadas están implementadas; su apariencia y comportamiento con sesión Supabase real no quedaron validados en el navegador durante esta ejecución. Las pruebas PostgreSQL locales no sustituyen la validación de GoTrue/Auth ni la entrega de correo. Ver [SUPABASE.md](SUPABASE.md) para el estado del despliegue.
+El login administrativo, la sesión Supabase y la consulta del dashboard sí se validaron en navegador desde Pages. Los demás módulos administrativos y el flujo completo de reserva siguen pendientes de verificación en navegador. Las pruebas PostgreSQL locales no sustituyen la validación de GoTrue/Auth ni la entrega de correo. Ver [SUPABASE.md](SUPABASE.md) para el estado del despliegue.

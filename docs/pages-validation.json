@@ -1,0 +1,14 @@
+{
+  "url": "https://magic-tps.github.io/emuss-v2/",
+  "checked_at": "2026-09-12T08:35:02.000Z",
+  "passed": [
+    "Public Pages with actual Supabase availability at 1440px",
+    "Public Pages with actual Supabase availability at 375px",
+    "Direct route HTTP 200: mis-reservas/",
+    "Direct route HTTP 200: admin/login/",
+    "Direct route HTTP 200: admin/recover/",
+    "Direct route HTTP 200: admin/set-password/",
+    "Real SUPER_ADMIN browser login, dashboard RPC and reload on Pages"
+  ],
+  "page_errors": []
+}
