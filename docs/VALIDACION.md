@@ -64,6 +64,12 @@ Actualizado: 12 de septiembre de 2026.
 
 Tras la indicación del usuario se ejecutó `scripts/bootstrap-owner.mjs` y se creó `u201916314@upc.edu.pe` como SUPER_ADMIN, con contraseña inicial guardada en `.env.owner` excluido de Git. `scripts/test-supabase.mjs` sigue pendiente de autorización específica para crear cuentas y reservas temporales, tras el rechazo de la revisión automática de permisos.
 
-El correo de acceso ya se recibió y los avisos usan Gmail SMTP con programación cada minuto. Se observaron tres avisos de reserva marcados SENT; su recepción no se confirmó por separado. Quedan por probar invitaciones/recuperación, reserva autenticada completa en navegador, cambios y reconexión Realtime y cámara QR. WhatsApp sigue pendiente.
+El correo de acceso ya se recibió y los avisos usan Gmail SMTP con programación cada minuto. Se observaron tres avisos de reserva marcados SENT y el usuario mostró un correo de confirmación recibido. Quedan por probar invitaciones/recuperación, reserva autenticada completa en navegador, cambios y reconexión Realtime y cámara QR. WhatsApp sigue pendiente.
+
+## QR en el correo de reserva
+
+Los avisos de confirmación y reprogramación incluyen HTML con QR incrustado mediante CID, una copia PNG adjunta y un enlace al comprobante autenticado. El QR se genera dentro de la función y contiene únicamente `reservation_code`, igual que el comprobante de la aplicación. Los avisos de cancelación omiten el QR. Se conserva la alternativa de texto para lectores de correo sin HTML.
+
+Validación: 12 pruebas unitarias aprobadas, incluida la lectura del PNG generado con un decodificador independiente, cancelaciones, reprogramaciones con el identificador usado por PostgreSQL y escape HTML. Lint, TypeScript y `deno check` aprobados. También se construyó el mensaje MIME con Nodemailer en Deno sin envío: imagen PNG inline con Content-ID y copia adjunta correctas. La nueva función se desplegó en Supabase; queda por observar el nuevo formato en un correo recibido después del despliegue. Los correos anteriores no se reenvían automáticamente.
 
 El login administrativo, la sesión Supabase y la consulta del dashboard sí se validaron en navegador desde Pages. Los demás módulos administrativos y el flujo completo de reserva siguen pendientes de verificación en navegador. Las pruebas PostgreSQL locales no sustituyen la validación de GoTrue/Auth ni la entrega de correo. Ver [SUPABASE.md](SUPABASE.md) para el estado del despliegue.
