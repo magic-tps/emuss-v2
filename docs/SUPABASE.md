@@ -35,7 +35,7 @@ La configuración de Auth alojada está en `supabase/hosted/supabase/config.toml
 supabase config push --project-ref vaduqtdiecmmxhmlycay --workdir supabase/hosted --yes
 ```
 
-La configuración principal conserva las plantillas para desarrollo local. Supabase rechazó modificar la plantilla alojada usando el proveedor predeterminado en el plan gratuito; por eso la configuración alojada omite esas plantillas y mantiene el enlace de acceso predeterminado. El formulario admite enlace o código de 6 a 8 dígitos cuando el correo lo incluya. La entrega a un buzón real no se ha verificado.
+Gmail SMTP está activado. El instalador genera la configuración privada en `.supabase/gmail-setup`, aplica la plantilla de código y conserva los retornos públicos/locales. El propietario confirmó la recepción de un código de acceso real. Para volver a configurar SMTP usar `npm run mail:setup`; ver [GMAIL.md](GMAIL.md).
 
 ## Superadministrador
 
@@ -45,4 +45,4 @@ Por indicación del usuario se creó `u201916314@upc.edu.pe` con el rol activo `
 
 Se ejecutó `scripts/bootstrap-owner.mjs` para aprovisionar al administrador autorizado. La prueba `scripts/test-supabase.mjs` sigue pendiente de autorización específica para crear cuentas y reservas temporales: verifica Auth con un OTP generado administrativamente, concurrencia por HTTP, eventos Realtime, RLS, cancelación y cola; elimina los datos temporales al finalizar. Esa prueba no envía correo ni valida entrega SMTP.
 
-Para correo transaccional faltan `RESEND_API_KEY` y `EMAIL_FROM`, y programar el dispatcher con su secreto. Para mostrar OTP en el correo de acceso falta SMTP propio y aplicar la plantilla. WhatsApp requiere sus credenciales y plantilla aprobada. No hay entregas de notificaciones verificadas todavía.
+El dispatcher usa Gmail SMTP y se ejecuta cada minuto mediante pg_cron/pg_net, con su secreto en Vault. Se observaron tres avisos de confirmación aceptados por SMTP y marcados SENT. WhatsApp sigue pendiente de credenciales, consentimiento y plantilla aprobada.

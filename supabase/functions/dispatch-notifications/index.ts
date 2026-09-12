@@ -1,6 +1,7 @@
 import { createClient } from 'npm:@supabase/supabase-js@2';
 import { response } from '../_shared/http.ts';
 import { smtpTransport } from '../_shared/smtp.ts';
+import { acknowledgeNotification } from '../_shared/acknowledge.ts';
 
 interface Reservation { reservation_code: string; venue_name: string; date: string; start_time: string; end_time: string; lane_number: number; email: string; phone: string }
 interface Notification { id: string; claim_token: string; channel: 'EMAIL' | 'WHATSAPP'; kind: string; reservation: Reservation }
@@ -44,15 +45,19 @@ Deno.serve(async request => {
   const smtp = Deno.env.get('EMAIL_PROVIDER') === 'smtp';
   if (smtp ? !Deno.env.get('SMTP_PASS') : !(Deno.env.get('RESEND_API_KEY') && Deno.env.get('EMAIL_FROM'))) return response({ error: 'EMAIL_NOT_CONFIGURED' }, 503);
   const db = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!, { auth: { persistSession: false } });
+  if (request.headers.get('X-EMUSS-Queue-Check') === 'true') {
+    const check = await db.from('notifications').select('id', { head: true }).limit(1);
+    return response(check.error ? { error: 'QUEUE_CONNECTION_FAILED', code: check.error.code, message: check.error.message } : { queue: 'connected' }, check.error ? 503 : 200);
+  }
   const { data, error } = await db.rpc('claim_notifications', { p_limit: smtp ? 2 : 25 });
-  if (error) return response({ error: 'QUEUE_UNAVAILABLE' }, 503);
+  if (error) return response({ error: 'QUEUE_UNAVAILABLE', code: error.code, message: error.message }, 503);
   let sent = 0;
   for (const n of data as Notification[]) {
     let failure: string | null = null;
     try { await (n.channel === 'EMAIL' ? email : whatsapp).send(n); sent++; }
     catch (e) { failure = e instanceof Error ? e.message : 'DELIVERY_FAILED'; }
-    const { error: acknowledgeError } = await db.rpc('finish_notification', { p_id: n.id, p_token: n.claim_token, p_success: failure === null, p_error: failure });
-    if (acknowledgeError) return response({ error: 'QUEUE_ACKNOWLEDGEMENT_FAILED', processed: data.length, sent }, 503);
+    const { error: acknowledgeError } = await acknowledgeNotification(() => db.rpc('finish_notification', { p_id: n.id, p_token: n.claim_token, p_success: failure === null, p_error: failure }));
+    if (acknowledgeError) return response({ error: 'QUEUE_ACKNOWLEDGEMENT_FAILED', code: acknowledgeError.code, message: acknowledgeError.message, processed: data.length, sent }, 503);
   }
   return response({ processed: data.length, sent });
 });

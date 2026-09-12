@@ -25,9 +25,9 @@ Variables públicas: `VITE_SUPABASE_URL` y `VITE_SUPABASE_ANON_KEY`. Nunca poner
 
 ## Autenticación y administradores
 
-Las cuentas que ya tienen contraseña pueden usar **Ingresar con contraseña** en la reserva o en Mis reservas. Este acceso no solicita correos. Si el envío alcanza su cuota, se explica el problema y se limita la frecuencia de reintento; eso no amplía la cuota del proveedor. Para el acceso de nuevos clientes por correo hace falta completar la configuración de SMTP.
+Las cuentas que ya tienen contraseña pueden usar **Ingresar con contraseña** en la reserva o en Mis reservas. Este acceso no solicita correos. Si el envío alcanza su cuota, se explica el problema y se limita la frecuencia de reintento; eso no amplía la cuota del proveedor. Gmail SMTP ya está activado y el propietario confirmó la recepción de un código real.
 
-Clientes verifican su correo mediante enlace de acceso o código OTP antes del hold, que así queda ligado a una identidad confirmada. No existe búsqueda pública por DNI. La plantilla local muestra `{{ .Token }}`. El proyecto alojado usa la plantilla predeterminada con enlace: Supabase rechazó su personalización en el plan gratuito con el proveedor de correo predeterminado. Para mostrar el código en ese correo hace falta configurar SMTP propio y aplicar la plantilla. Las URLs locales de retorno ya están registradas.
+Clientes verifican su correo mediante enlace de acceso o código OTP antes del hold, que así queda ligado a una identidad confirmada. No existe búsqueda pública por DNI. La plantilla muestra `{{ .Token }}`. El proyecto alojado utiliza Gmail SMTP con códigos de ocho dígitos. Las URLs de retorno locales y de GitHub Pages están registradas.
 
 Para el primer administrador: crear/confirmar un usuario mediante Supabase Auth, y ejecutar **una sola vez desde SQL Editor como administrador de la base**:
 
@@ -110,9 +110,9 @@ Los horarios vienen de plantillas PostgreSQL por día de semana. Después de edi
 
 ## Notificaciones y servicios externos
 
-Para la configuración elegida con Gmail, ver [docs/GMAIL.md](docs/GMAIL.md). `npm run mail:verify` comprueba SMTP sin enviar correo; `npm run mail:setup` configura Auth, el dispatcher y el scheduler cuando `.env.smtp` contiene una contraseña de aplicación válida. La activación sigue pendiente de esa credencial.
+Para la configuración elegida con Gmail, ver [docs/GMAIL.md](docs/GMAIL.md). `npm run mail:verify` comprueba SMTP sin enviar correo; `npm run mail:setup` configura Auth, el dispatcher y el scheduler cuando `.env.smtp` contiene una contraseña de aplicación válida. La activación está completada y los avisos se procesan cada minuto.
 
-La confirmación encola correo en la misma transacción; una reserva confirmada no significa que el correo haya sido entregado. `dispatch-notifications` reclama mensajes con `SKIP LOCKED`, token y lease, reintenta hasta cinco veces y usa clave de idempotencia para correo. La cola WhatsApp está preparada como adaptador; activarla requiere consentimiento, teléfono internacional y plantilla aprobada. No se encola WhatsApp automáticamente.
+La confirmación encola correo en la misma transacción; una reserva confirmada no significa que el correo haya sido entregado. `dispatch-notifications` reclama mensajes con `SKIP LOCKED`, token y lease y reintenta hasta cinco veces. Resend usa una clave de idempotencia; SMTP conserva un Message-ID estable sin garantía de deduplicación. La cola WhatsApp está preparada como adaptador; activarla requiere consentimiento, teléfono internacional y plantilla aprobada. No se encola WhatsApp automáticamente.
 
 Secretos de Edge Functions: `APP_URL`, `RESEND_API_KEY`, `EMAIL_FROM`, `NOTIFICATION_CRON_SECRET`; opcionales `WHATSAPP_ACCESS_TOKEN`, `WHATSAPP_PHONE_NUMBER_ID`, `WHATSAPP_TEMPLATE`, `WHATSAPP_GRAPH_VERSION`. Supabase proporciona sus variables de URL/anon/service role en Edge. Configurarlos con `supabase secrets set --env-file <archivo privado>` y desplegar:
 

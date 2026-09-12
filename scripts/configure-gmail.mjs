@@ -40,8 +40,9 @@ console.log('Gmail: conexión TLS y autenticación correctas. No se ha enviado c
 if (process.argv.includes('--verify-only')) process.exit(0);
 
 const folder = '.supabase/gmail-setup';
-await mkdir(`${folder}/supabase`, { recursive: true });
-const template = resolve('supabase/templates/magic-link.html').replaceAll('\\', '/');
+await mkdir(`${folder}/supabase/templates`, { recursive: true });
+await writeFile(`${folder}/supabase/templates/magic-link.html`, await readFile('supabase/templates/magic-link.html', 'utf8'));
+const template = './supabase/templates/magic-link.html';
 let config = await readFile('supabase/hosted/supabase/config.toml', 'utf8');
 config += '\n[auth.rate_limit]\nemail_sent = 30\n';
 config += `\n[auth.email.smtp]\nenabled = true\nhost = "env(SMTP_HOST)"\nport = 465\nuser = "env(SMTP_USER)"\npass = "env(SMTP_PASS)"\nadmin_email = "env(SMTP_USER)"\nsender_name = "EMUSS"\n`;
